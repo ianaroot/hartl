@@ -1,11 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
-# gem 'less-rails'
-# gem "therubyracer"
-# gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
-# gem "twitter-bootstrap-rails"
 gem 'bootstrap-sass', '2.1'
+gem 'bcrypt-ruby', '3.0.1'
+
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -13,6 +11,7 @@ gem 'pg', '0.12.2'
 
 group :development, :test do
   gem 'rspec-rails', '2.11.0'
+  gem 'annotate', '2.5.0'
 end
 
 # Gems used only for assets and not required
