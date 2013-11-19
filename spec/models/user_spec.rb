@@ -110,4 +110,14 @@ describe User do
       specify { user_for_invalid_password.should be_false }
     end
   end
+
+  describe "email address with uppercase letters" do
+    let(:uppercase_email) { "YELLING@YELLING.COM" }
+
+    it "should be saved as lowercase" do
+      @user.email = uppercase_email
+      @user.save
+      @user.reload.email.should == uppercase_email.downcase
+    end
+  end
 end
