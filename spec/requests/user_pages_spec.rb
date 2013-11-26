@@ -63,4 +63,45 @@ describe "UserPages" do
       end
     end
   end
+
+  describe "edit" do
+    let(:user) { FactoryGirl.create(:user) }  
+    before do
+      valid_signin(user)
+      visit edit_user_path(user) 
+    end
+
+    describe "page" do
+      it { should have_heading("Update your profile") }
+      it { should have_title("Edit user") }
+      it { should have_link("change", href: 'http://gravatar.com/emails') }
+      describe "with invalid information" do
+        before { click_button "Save changes" }
+
+        it { should have_error_message('') }
+      end
+    end
+
+    describe "with valid information" do
+      let(:new_name) { "New Name" }
+      let(:new_email) { "new@example.com" }
+      before do
+        fill_in "Name",     with: new_name
+        fill_in "Email",    with: new_email
+        fill_in "Password",  with: user.password
+        fill_in "Confirm Password", with: user.password
+        click_button "Save changes"
+      end
+
+      it { should have_title(new_name) }
+      it { should have_success_message('') }
+      it { should have_link('Sign out', href: signout_path) }
+      specify { user.reload.name.should == new_name }
+      specify { user.reload.email.should == new_email }
+    end
+  end
+
 end
+
+
+
