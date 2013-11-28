@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_filter :redirect_signed_in_user, only: [:new, :create]
   before_filter :correct_user, only:    [:edit, :update]
   before_filter :admin_user, only: :destroy
+  # before_filter :prevent_self_deletion, only: [:destroy]
 
   def new
     @user = User.new
@@ -16,9 +17,11 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User destroyed"
-    redirect_to users_url
+    unless current_user == ( user = User.find(params[:id]) )
+      user.destroy
+      flash[:success] = "User destroyed"
+    end
+      redirect_to users_url
   end
 
   def update
