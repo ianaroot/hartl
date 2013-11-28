@@ -114,6 +114,18 @@ describe "Authentication" do
       end
     end
   end
+
+  describe "when already signed in" do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      visit signin_path
+      valid_signin(user)
+      visit root_url
+      click_link('Sign up')
+    end
+      it { should_not have_heading('Sign up') }
+
+  end
 end
 
 
