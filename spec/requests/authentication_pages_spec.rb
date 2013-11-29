@@ -146,10 +146,8 @@ describe "Authentication" do
       visit signin_path
       valid_signin(user)
       visit root_url
-      click_link('Sign up')
     end
-      it { should_not have_heading('Sign up') }
-
+    it { should_not have_link('Sign up') }
   end
 end
 
