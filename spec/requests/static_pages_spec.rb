@@ -40,6 +40,20 @@ describe "Static pages" do
         click_link "delete"
         page.should have_selector("span", text: "1 micropost")
       end
+
+      describe "pagination" do
+
+        before(:all)  { 30.times { FactoryGirl.create(:micropost) } }
+        after(:all)   { Micropost.delete_all }
+
+        it { should have_selector('ol.microposts') }
+
+        it "should list each micropost" do
+          Micropost.paginate(page: 1).each do |micropost|
+            page.should have_selector('li', text: micropost.content)
+          end
+        end       
+      end
     end
   end
 
