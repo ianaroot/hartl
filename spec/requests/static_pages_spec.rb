@@ -31,6 +31,15 @@ describe "Static pages" do
           page.should have_selector("li##{item.id}", text: item.content)
         end
       end 
+
+      describe "should properly pluralize with multiple posts in the user's feed" do
+        it { should have_selector("span", text: "2 microposts") }
+      end
+
+      it "should not pluralize with single post in user's feed" do
+        click_link "delete"
+        page.should have_selector("span", text: "1 micropost")
+      end
     end
   end
 
