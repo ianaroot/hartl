@@ -161,6 +161,19 @@ describe "UserPages" do
     end
   end
 
+  describe "other users' profiles" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+    let!(:micropost) { FactoryGirl.create(:micropost, user: other_user)}
+
+    before do
+      valid_signin(user)
+      visit user_path(other_user)
+    end
+
+    it { should_not have_link('delete')}
+  end
+
 end
 
 
