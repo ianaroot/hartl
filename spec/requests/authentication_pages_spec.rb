@@ -50,12 +50,10 @@ describe "Authentication" do
   end
 
   describe "authorization" do
-
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
 
       describe "in the Microposts controller" do
-
         describe "submitting to the create action" do
           before { post microposts_path }
           specify { response.should redirect_to(signin_path) }
@@ -67,6 +65,18 @@ describe "Authentication" do
         end
       end
 
+      describe "in the Relationships controller" do
+        describe "submitting to the create action" do
+          before { post relationships_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete relationship_path(1) }
+          specify { response.should redirect_to(signin_path) }
+        end
+      end
+
       describe "when attempting to visit a protected page" do
         before do
           visit edit_user_path(user)
@@ -74,7 +84,6 @@ describe "Authentication" do
         end
 
         describe "after signing in" do
-
           it "should render the desired protected page" do
             page.should have_title("Edit user")
           end
@@ -84,7 +93,8 @@ describe "Authentication" do
               delete signout_path
               visit signin_path
               valid_signin(user)
-            end  
+            end 
+
             it "should render the default (profile) page" do
               page.should have_title(user.name)
             end
@@ -93,7 +103,6 @@ describe "Authentication" do
       end
 
       describe "in the Users controller" do
-
         describe "visiting the edit page" do
           before { visit edit_user_path(user) }
           it { should have_title('Sign in') }
@@ -157,6 +166,7 @@ describe "Authentication" do
       valid_signin(user)
       visit root_url
     end
+
     it { should_not have_link('Sign up') }
   end
 end
